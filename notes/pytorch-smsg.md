@@ -41,7 +41,9 @@ The CIFAR-10 dataset consists of 60000 32x32 colour images in 10 classes, with 6
 
 The dataset is divided into five training batches and one test batch, each with 10000 images. The test batch contains exactly 1000 randomly-selected images from each class. The training batches contain the remaining images in random order, but some training batches may contain more images from one class than another. Between them, the training batches contain exactly 5000 images from each class.
 ### 3.代码准备
-目录介绍：  
+代码1和代码2是两个不同的基准测试，两者是并列的。   
+
+**代码1目录介绍：**     
 ``` 
 -pytorch  # pytorch标准测试代码目录 
 --models  # 模型目录
@@ -55,9 +57,15 @@ The dataset is divided into five training batches and one test batch, each with 
 --smsg.py # 测试主程序
 --misc.py # 显式库
 ```
-![](../imgs/01.png)  
+**代码2目录介绍：**   
+```
+-pytorch  # pytorch标准测试代码目录 
+--model.py # 模型
+--smsg2.py # 测试主程序
+```
+
 ### 4.测试及结果分析
-**用法**：   
+**代码1-用法**：   
 ```shell
 python smsg.py --epoch 1 --trainBatchSize 10000 --testBatchSize 10000
 ```
@@ -67,6 +75,10 @@ optional arguments:
 --epoch             default=200     number of epochs tp train for
 --trainBatchSize    default=100     training batch size
 --testBatchSize     default=100     test batch size
+```
+**代码2-用法**：   
+```shell
+python train.py
 ```
 ## 二、Docker环境
 ### 1.环境准备
@@ -81,5 +93,5 @@ optional arguments:
 nvidia-docker run -itd -v /root/felix/:/workspace fusimeng/ai.pytorch:v5
 nvidia-docker exec -it xxx bash
 ```
-**用法**：   
+**代码1/2用法**：   
 同上
