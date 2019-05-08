@@ -32,28 +32,29 @@ Wed May  8 16:53:55 2019
 ```shell
 conda create --name pytorch python=3.6
 source activate pytorch
-pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pytorch torchvision 
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pytorch torchvision tensorboardx
 或者
 conda install pytorch torchvision 
-```
-```shell
+
 pip list 
-Package     Version 
------------ --------
-certifi     2019.3.9
-cffi        1.12.3  
-mkl-fft     1.0.12  
-mkl-random  1.0.2   
-numpy       1.16.3  
-olefile     0.46    
-Pillow      6.0.0   
-pip         19.1    
-pycparser   2.19    
-setuptools  41.0.1  
-six         1.12.0  
-torch       1.0.1   
-torchvision 0.2.1   
-wheel       0.33.1 
+Package      Version 
+------------ --------
+certifi      2019.3.9
+cffi         1.12.3  
+mkl-fft      1.0.12  
+mkl-random   1.0.2   
+numpy        1.16.3  
+olefile      0.46    
+Pillow       6.0.0   
+pip          19.1    
+protobuf     3.7.1   
+pycparser    2.19    
+setuptools   41.0.1  
+six          1.12.0  
+tensorboardX 1.6     
+torch        1.0.1   
+torchvision  0.2.1   
+wheel        0.33.1
 ```
 ### 2.数据准备
 下载[cifar-10-python.tar.gz](https://www.cs.toronto.edu/~kriz/cifar-10-python.tar.gz)数据集，放在data目录下。   
@@ -86,14 +87,13 @@ The dataset is divided into five training batches and one test batch, each with 
 --model.py # 模型
 --smsg2.py # 测试主程序
 ```
-
 ### 4.测试及结果分析
 **代码1-用法**：   
 ```shell
 python smsg.py --epoch 1 --trainBatchSize 10000 --testBatchSize 10000
-```
+
 optional arguments:   
-```
+
 --lr                default=1e-3    learning rate
 --epoch             default=200     number of epochs tp train for
 --trainBatchSize    default=100     training batch size
@@ -101,7 +101,7 @@ optional arguments:
 ```
 **代码2-用法**：   
 ```shell
-python train.py
+python smsg2.py
 ```
 ## 二、Docker环境
 ### 1.环境准备
