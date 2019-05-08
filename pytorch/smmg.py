@@ -23,6 +23,7 @@ parser = argparse.ArgumentParser(description='PyTorch CIFAR10 Training')
 parser.add_argument('--lr', default=0.01, type=float, help='learning rate')
 parser.add_argument('--epoch', default=4, type=int, help='epoch')
 parser.add_argument('--resume', '-r', default=None, help='resume from checkpoint')
+parser.add_argument('--log', '-r', default="../output/smmg.pkl", help='resume from checkpoint')
 parser.add_argument('--net', default='res18')
 parser.add_argument('--batch_size', default='128')
 args = parser.parse_args()
@@ -31,6 +32,7 @@ args = parser.parse_args()
 bs = int(args.batch_size)
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 resume = str(args.resume)
+log = str(args.log)
 epoch = int(args.epoch)
 best_acc = 0  # best test accuracy
 start_epoch = 0  # start from epoch 0 or last checkpoint epoch
@@ -145,7 +147,7 @@ def test(epoch):
         }
         if not os.path.isdir('checkpoint'):
             os.mkdir('checkpoint')
-        torch.save(state, '../ckpt.t7')
+        torch.save(state, log)
         best_acc = acc
 
 list_loss = []
