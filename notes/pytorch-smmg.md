@@ -1,5 +1,5 @@
-# pytorch单机单卡标准测试
-参考：https://github.com/icpm/pytorch-cifar10  
+# pytorch单机多卡标准测试
+参考：https://github.com/dnddnjs/pytorch-multigpu   
 ## 一、主机环境
 ### 1.环境准备
 (1) [安装Anaconda](https://github.com/fusimeng/ai_tools)    
@@ -11,9 +11,9 @@
 ```shell
 conda create --name pytorch python=3.6
 source activate pytorch
-pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pytorch torchvision 
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pytorch torchvision tensorboardx
 或者
-conda install pytorch torchvision 
+conda install pytorch torchvision tensorboardx
 ```
 ```shell
 pip list 
