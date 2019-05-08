@@ -68,3 +68,17 @@ optional arguments:
 --testBatchSize     default=100     test batch size
 ```
 ## 二、Docker环境
+### 1.环境准备
+镜像：https://cloud.docker.com/repository/docker/fusimeng/ai.pytorch    
+使用镜像：fusimeng/ai.pytorch:v5   
+### 2.数据准备
+同上
+### 3.代码准备
+同上
+### 4.测试及结果分析
+```shell
+nvidia-docker run -itd -v /root/felix/:/workspace fusimeng/ai.pytorch:v5
+nvidia-docker exec -it xxx bash
+```
+**用法**：   
+同上
