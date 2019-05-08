@@ -1,5 +1,52 @@
-# pytorch单机多卡标准测试
-参考：https://github.com/dnddnjs/pytorch-multigpu   
+# pytorch单机多卡标准测试 
+### 硬件环境  
+```
+nvidia-smi
+Wed May  8 16:54:50 2019       
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 410.78       Driver Version: 410.78       CUDA Version: 10.0     |
+|-------------------------------+----------------------+----------------------+
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|===============================+======================+======================|
+|   0  GeForce RTX 208...  Off  | 00000000:04:00.0 Off |                  N/A |
+| 22%   36C    P0    64W / 250W |      0MiB / 10989MiB |      0%      Default |
++-------------------------------+----------------------+----------------------+
+|   1  GeForce RTX 208...  Off  | 00000000:05:00.0 Off |                  N/A |
+| 22%   38C    P0    68W / 250W |      0MiB / 10989MiB |      0%      Default |
++-------------------------------+----------------------+----------------------+
+|   2  GeForce RTX 208...  Off  | 00000000:06:00.0 Off |                  N/A |
+| 22%   37C    P0    62W / 250W |      0MiB / 10989MiB |      0%      Default |
++-------------------------------+----------------------+----------------------+
+|   3  GeForce RTX 208...  Off  | 00000000:07:00.0 Off |                  N/A |
+| 22%   37C    P0    59W / 250W |      0MiB / 10989MiB |      0%      Default |
++-------------------------------+----------------------+----------------------+
+|   4  GeForce RTX 208...  Off  | 00000000:08:00.0 Off |                  N/A |
+| 23%   37C    P0    61W / 250W |      0MiB / 10989MiB |      0%      Default |
++-------------------------------+----------------------+----------------------+
+|   5  GeForce RTX 208...  Off  | 00000000:0B:00.0 Off |                  N/A |
+| 23%   37C    P0    62W / 250W |      0MiB / 10989MiB |      0%      Default |
++-------------------------------+----------------------+----------------------+
+|   6  GeForce RTX 208...  Off  | 00000000:0C:00.0 Off |                  N/A |
+| 20%   38C    P0    55W / 250W |      0MiB / 10989MiB |      1%      Default |
++-------------------------------+----------------------+----------------------+
+|   7  GeForce RTX 208...  Off  | 00000000:0D:00.0 Off |                  N/A |
+|  7%   37C    P0    54W / 250W |      0MiB / 10989MiB |      1%      Default |
++-------------------------------+----------------------+----------------------+
+|   8  GeForce RTX 208...  Off  | 00000000:0E:00.0 Off |                  N/A |
+| 34%   43C    P0    71W / 250W |      0MiB / 10989MiB |      0%      Default |
++-------------------------------+----------------------+----------------------+
+|   9  GeForce RTX 208...  Off  | 00000000:0F:00.0 Off |                  N/A |
+| 50%   79C    P2   243W / 250W |  10629MiB / 10989MiB |     90%      Default |
++-------------------------------+----------------------+----------------------+
+                                                                               
++-----------------------------------------------------------------------------+
+| Processes:                                                       GPU Memory |
+|  GPU       PID   Type   Process name                             Usage      |
+|=============================================================================|
+|    9     22113      C   python                                     10619MiB |
++-----------------------------------------------------------------------------+
+```
 ## 一、主机环境
 ### 1.环境准备
 (1) [安装Anaconda](https://github.com/fusimeng/ai_tools)    
@@ -13,7 +60,9 @@ conda create --name pytorch python=3.6
 source activate pytorch
 pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pytorch torchvision tensorboardx
 或者
-conda install pytorch torchvision tensorboardx
+（我使用的）   
+conda install pytorch torchvision 
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple  tensorboardx
 ```
 ```shell
 pip list 
@@ -41,32 +90,27 @@ The CIFAR-10 dataset consists of 60000 32x32 colour images in 10 classes, with 6
 
 The dataset is divided into five training batches and one test batch, each with 10000 images. The test batch contains exactly 1000 randomly-selected images from each class. The training batches contain the remaining images in random order, but some training batches may contain more images from one class than another. Between them, the training batches contain exactly 5000 images from each class.
 ### 3.代码准备
-目录介绍：  
+**代码2目录介绍**：   
+使用torch.nn.DataParallel方法。    
+参考：https://github.com/dnddnjs/pytorch-multigpu       
 ``` 
 -pytorch  # pytorch标准测试代码目录 
---models  # 模型目录
-----AlexNet.py
-----DenseNet.py
-----GoogleNet.py
-----LeNet.py
-----ResNet.py
-----VGG.py
-----WideResNet.py
---smsg.py # 测试主程序
---misc.py # 显式库
+--model.py  # 模型
+--smsg2.py # 测试主程序
 ```
-![](../imgs/01.png)  
+ 
 ### 4.测试及结果分析
-**用法**：   
+**代码2用法**：         
 ```shell
-python smsg.py --epoch 1 --trainBatchSize 10000 --testBatchSize 10000
+python smmg2.py --gpu_devices 0 1 2 3 --batch_size 768
 ```
 optional arguments:   
 ```
+--resume            default=None    
+--batch_size        default=768
+--num_worker        default=4
+--gpu_devices       default=None
 --lr                default=1e-3    learning rate
---epoch             default=200     number of epochs tp train for
---trainBatchSize    default=100     training batch size
---testBatchSize     default=100     test batch size
 ```
 ## 二、Docker环境
 ### 1.环境准备

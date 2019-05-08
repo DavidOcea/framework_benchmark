@@ -1,5 +1,26 @@
 # pytorch单机单卡标准测试
-参考：https://github.com/icpm/pytorch-cifar10  
+  
+### 硬件环境   
+```
+nvidia-smi
+Wed May  8 16:53:55 2019       
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 410.79       Driver Version: 410.79       CUDA Version: 10.0     |
+|-------------------------------+----------------------+----------------------+
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|===============================+======================+======================|
+|   0  Tesla P40           Off  | 00000000:03:00.0 Off |                  Off |
+| N/A   39C    P0    45W / 250W |      0MiB / 24451MiB |      3%      Default |
++-------------------------------+----------------------+----------------------+
+                                                                               
++-----------------------------------------------------------------------------+
+| Processes:                                                       GPU Memory |
+|  GPU       PID   Type   Process name                             Usage      |
+|=============================================================================|
+|  No running processes found                                                 |
++-----------------------------------------------------------------------------+
+```
 ## 一、主机环境
 ### 1.环境准备
 (1) [安装Anaconda](https://github.com/fusimeng/ai_tools)    
@@ -43,7 +64,8 @@ The dataset is divided into five training batches and one test batch, each with 
 ### 3.代码准备
 代码1和代码2是两个不同的基准测试，两者是并列的。   
 
-**代码1目录介绍：**     
+**代码1目录介绍：**    
+参考：https://github.com/icpm/pytorch-cifar10       
 ``` 
 -pytorch  # pytorch标准测试代码目录 
 --models  # 模型目录
@@ -57,7 +79,8 @@ The dataset is divided into five training batches and one test batch, each with 
 --smsg.py # 测试主程序
 --misc.py # 显式库
 ```
-**代码2目录介绍：**   
+**代码2目录介绍：**    
+参考：https://github.com/dnddnjs/pytorch-multigpu    
 ```
 -pytorch  # pytorch标准测试代码目录 
 --model.py # 模型
