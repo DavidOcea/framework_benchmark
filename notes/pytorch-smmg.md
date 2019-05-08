@@ -101,19 +101,8 @@ The dataset is divided into five training batches and one test batch, each with 
 ### 4.测试及结果分析
 **用法**：   
 ```shell
-python smmg.py --lr 0.001 --epoch 1 --trainBatchSize 10000 --testBatchSize 10000 --num_workers 2 --log "../output/" 
+python smmg.py --lr 0.001 --epoch 1 
 
-optional arguments:   
-
---lr                default=1e-3    learning rate
---epoch             default=10     number of epochs tp train for
---trainBatchSize    default=100     training batch size
---testBatchSize     default=100     test batch size
---cuda              default=torch.cuda.is_available()  whether cuda is in use
---log               default="../output/"    storage logs/models
---num_workers       default=4, type=int,    number of workers to load data
---resume            default="../output/"    resume model 
-备注： 模型加载，再次训练这个功能没有做
 ```
 **pytorch指定显卡的几种方式**   
 1.直接终端中设定：   
