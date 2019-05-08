@@ -33,9 +33,6 @@ Wed May  8 16:53:55 2019
 conda create --name pytorch python=3.6
 source activate pytorch
 pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pytorch torchvision tensorboardx
-或者
-conda install pytorch torchvision 
-
 pip list 
 Package      Version 
 ------------ --------
@@ -62,11 +59,7 @@ wheel        0.33.1
 The CIFAR-10 dataset consists of 60000 32x32 colour images in 10 classes, with 6000 images per class. There are 50000 training images and 10000 test images.
 
 The dataset is divided into five training batches and one test batch, each with 10000 images. The test batch contains exactly 1000 randomly-selected images from each class. The training batches contain the remaining images in random order, but some training batches may contain more images from one class than another. Between them, the training batches contain exactly 5000 images from each class.
-### 3.代码准备
-代码1和代码2是两个不同的基准测试，两者是并列的。   
-
-**代码1目录介绍：**    
-参考：https://github.com/icpm/pytorch-cifar10       
+### 3.代码准备       
 ``` 
 -pytorch  # pytorch标准测试代码目录 
 --models  # 模型目录
@@ -80,28 +73,22 @@ The dataset is divided into five training batches and one test batch, each with 
 --smsg.py # 测试主程序
 --misc.py # 显式库
 ```
-**代码2目录介绍：**    
-参考：https://github.com/dnddnjs/pytorch-multigpu    
-```
--pytorch  # pytorch标准测试代码目录 
---model.py # 模型
---smsg2.py # 测试主程序
-```
 ### 4.测试及结果分析
-**代码1-用法**：   
+**用法**：   
 ```shell
-python smsg.py --epoch 1 --trainBatchSize 10000 --testBatchSize 10000
+python smsg.py --lr 0.001 --epoch 1 --trainBatchSize 10000 --testBatchSize 10000 --num_workers 2 --log "../output/" 
 
 optional arguments:   
 
 --lr                default=1e-3    learning rate
---epoch             default=200     number of epochs tp train for
+--epoch             default=10     number of epochs tp train for
 --trainBatchSize    default=100     training batch size
 --testBatchSize     default=100     test batch size
-```
-**代码2-用法**：   
-```shell
-python smsg2.py
+--cuda              default=torch.cuda.is_available()  whether cuda is in use
+--log               default="../output/"    storage logs/models
+--num_workers       default=4, type=int,    number of workers to load data
+--resume            default="../output/"    resume model 
+备注： 模型加载，再次训练这个功能没有做
 ```
 ## 二、Docker环境
 ### 1.环境准备
