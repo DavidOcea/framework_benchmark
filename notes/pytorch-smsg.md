@@ -90,6 +90,21 @@ optional arguments:
 --resume            default="../output/"    resume model 
 备注： 模型加载，再次训练这个功能没有做
 ```
+**pytorch指定显卡的几种方式**   
+1.直接终端中设定：   
+```
+CUDA_VISIBLE_DEVICES=1 python my_script.py
+```
+2.python代码中设定：   
+```
+import os
+os.environ["CUDA_VISIBLE_DEVICES"] = "2"
+```
+3.使用函数 set_device
+```
+import torch
+torch.cuda.set_device(id)
+```
 ## 二、Docker环境
 ### 1.环境准备
 镜像：https://cloud.docker.com/repository/docker/fusimeng/ai.pytorch    
