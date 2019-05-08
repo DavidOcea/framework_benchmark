@@ -101,7 +101,7 @@ The dataset is divided into five training batches and one test batch, each with 
 ### 4.测试及结果分析
 **用法**：   
 ```shell
-python smsg.py --lr 0.001 --epoch 1 --trainBatchSize 10000 --testBatchSize 10000 --num_workers 2 --log "../output/" 
+python smmg.py --lr 0.001 --epoch 1 --trainBatchSize 10000 --testBatchSize 10000 --num_workers 2 --log "../output/" 
 
 optional arguments:   
 

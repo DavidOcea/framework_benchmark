@@ -23,7 +23,7 @@ parser = argparse.ArgumentParser(description='PyTorch CIFAR10 Training')
 parser.add_argument('--lr', default=0.01, type=float, help='learning rate')
 parser.add_argument('--epoch', default=4, type=int, help='epoch')
 parser.add_argument('--resume', '-r', default=None, help='resume from checkpoint')
-parser.add_argument('--log', '-r', default="../output/smmg.pkl", help='resume from checkpoint')
+parser.add_argument('--log', default="../output/smmg.pkl", help='resume from checkpoint')
 parser.add_argument('--net', default='res18')
 parser.add_argument('--batch_size', default='128')
 args = parser.parse_args()
@@ -61,17 +61,8 @@ classes = ('plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship'
 
 # 网络准备
 print('==> Building model..')
-# net = VGG('VGG19')
-if args.net=='res18':
-    net = resnet18()
-elif args.net=='vgg':
-    net = VGG19()
-elif args.net=='res34':
-    net = resnet34()
-elif args.net=='res50':
-    net = resnet50()
-elif args.net=='res101':
-    net = resnet101()
+net = WideResNet(depth=28, num_classes=10)
+
 
 
 net = net.to(device)
@@ -79,10 +70,10 @@ if device == 'cuda':
     net = torch.nn.DataParallel(net) # make parallel
     cudnn.benchmark = True
 
-if not args.resume:
+if  args.resume:
     # Load checkpoint.
     print('==> Resuming from checkpoint..')
-    assert os.path.isdir('checkpoint'), 'Error: no checkpoint directory found!'
+    assert os.path.isdir(resume), 'Error: no checkpoint directory found!'
     checkpoint = torch.load(resume)
     net.load_state_dict(checkpoint['net'])
     best_acc = checkpoint['acc']
