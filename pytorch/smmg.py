@@ -61,13 +61,12 @@ classes = ('plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship'
 
 # 网络准备
 print('==> Building model..')
+
 net = WideResNet(depth=28, num_classes=10)
-
-
-
 net = net.to(device)
 if device == 'cuda':
     net = torch.nn.DataParallel(net) # make parallel
+    # net = torch.nn.DataParallel(ResNet(ResidualBlock, [2, 2, 2, 2]),device_ids=gpulist).cuda()
     cudnn.benchmark = True
 
 if  args.resume:
