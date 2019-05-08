@@ -2,49 +2,43 @@
 ### 硬件环境  
 ```
 nvidia-smi
-Wed May  8 16:54:50 2019       
+Wed May  8 21:38:46 2019       
 +-----------------------------------------------------------------------------+
-| NVIDIA-SMI 410.78       Driver Version: 410.78       CUDA Version: 10.0     |
+| NVIDIA-SMI 384.183      Driver Version: 384.183      CUDA Version: 9.0      |
 |-------------------------------+----------------------+----------------------+
 | GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
 | Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
 |===============================+======================+======================|
-|   0  GeForce RTX 208...  Off  | 00000000:04:00.0 Off |                  N/A |
-| 22%   36C    P0    64W / 250W |      0MiB / 10989MiB |      0%      Default |
+|   0  Tesla V100-SXM2...  On   | 00000000:06:00.0 Off |                    0 |
+| N/A   37C    P0    41W / 300W |     10MiB / 32502MiB |      0%      Default |
 +-------------------------------+----------------------+----------------------+
-|   1  GeForce RTX 208...  Off  | 00000000:05:00.0 Off |                  N/A |
-| 22%   38C    P0    68W / 250W |      0MiB / 10989MiB |      0%      Default |
+|   1  Tesla V100-SXM2...  On   | 00000000:07:00.0 Off |                    0 |
+| N/A   39C    P0    43W / 300W |     10MiB / 32502MiB |      0%      Default |
 +-------------------------------+----------------------+----------------------+
-|   2  GeForce RTX 208...  Off  | 00000000:06:00.0 Off |                  N/A |
-| 22%   37C    P0    62W / 250W |      0MiB / 10989MiB |      0%      Default |
+|   2  Tesla V100-SXM2...  On   | 00000000:0A:00.0 Off |                    0 |
+| N/A   39C    P0    44W / 300W |     10MiB / 32502MiB |      0%      Default |
 +-------------------------------+----------------------+----------------------+
-|   3  GeForce RTX 208...  Off  | 00000000:07:00.0 Off |                  N/A |
-| 22%   37C    P0    59W / 250W |      0MiB / 10989MiB |      0%      Default |
+|   3  Tesla V100-SXM2...  On   | 00000000:0B:00.0 Off |                    0 |
+| N/A   37C    P0    45W / 300W |     10MiB / 32502MiB |      0%      Default |
 +-------------------------------+----------------------+----------------------+
-|   4  GeForce RTX 208...  Off  | 00000000:08:00.0 Off |                  N/A |
-| 23%   37C    P0    61W / 250W |      0MiB / 10989MiB |      0%      Default |
+|   4  Tesla V100-SXM2...  On   | 00000000:85:00.0 Off |                    0 |
+| N/A   37C    P0    42W / 300W |     10MiB / 32502MiB |      0%      Default |
 +-------------------------------+----------------------+----------------------+
-|   5  GeForce RTX 208...  Off  | 00000000:0B:00.0 Off |                  N/A |
-| 23%   37C    P0    62W / 250W |      0MiB / 10989MiB |      0%      Default |
+|   5  Tesla V100-SXM2...  On   | 00000000:86:00.0 Off |                    0 |
+| N/A   38C    P0    43W / 300W |     10MiB / 32502MiB |      0%      Default |
 +-------------------------------+----------------------+----------------------+
-|   6  GeForce RTX 208...  Off  | 00000000:0C:00.0 Off |                  N/A |
-| 20%   38C    P0    55W / 250W |      0MiB / 10989MiB |      1%      Default |
+|   6  Tesla V100-SXM2...  On   | 00000000:89:00.0 Off |                    0 |
+| N/A   38C    P0    43W / 300W |     10MiB / 32502MiB |      0%      Default |
 +-------------------------------+----------------------+----------------------+
-|   7  GeForce RTX 208...  Off  | 00000000:0D:00.0 Off |                  N/A |
-|  7%   37C    P0    54W / 250W |      0MiB / 10989MiB |      1%      Default |
-+-------------------------------+----------------------+----------------------+
-|   8  GeForce RTX 208...  Off  | 00000000:0E:00.0 Off |                  N/A |
-| 34%   43C    P0    71W / 250W |      0MiB / 10989MiB |      0%      Default |
-+-------------------------------+----------------------+----------------------+
-|   9  GeForce RTX 208...  Off  | 00000000:0F:00.0 Off |                  N/A |
-| 50%   79C    P2   243W / 250W |  10629MiB / 10989MiB |     90%      Default |
+|   7  Tesla V100-SXM2...  On   | 00000000:8A:00.0 Off |                    0 |
+| N/A   37C    P0    42W / 300W |     10MiB / 32502MiB |      0%      Default |
 +-------------------------------+----------------------+----------------------+
                                                                                
 +-----------------------------------------------------------------------------+
 | Processes:                                                       GPU Memory |
 |  GPU       PID   Type   Process name                             Usage      |
 |=============================================================================|
-|    9     22113      C   python                                     10619MiB |
+|  No running processes found                                                 |
 +-----------------------------------------------------------------------------+
 ```
 ## 一、主机环境
@@ -89,28 +83,52 @@ wheel       0.33.1
 The CIFAR-10 dataset consists of 60000 32x32 colour images in 10 classes, with 6000 images per class. There are 50000 training images and 10000 test images.
 
 The dataset is divided into five training batches and one test batch, each with 10000 images. The test batch contains exactly 1000 randomly-selected images from each class. The training batches contain the remaining images in random order, but some training batches may contain more images from one class than another. Between them, the training batches contain exactly 5000 images from each class.
-### 3.代码准备
-**代码2目录介绍**：   
-使用torch.nn.DataParallel方法。    
-参考：https://github.com/dnddnjs/pytorch-multigpu       
+### 3.代码准备     
 ``` 
 -pytorch  # pytorch标准测试代码目录 
---model.py  # 模型
---smsg2.py # 测试主程序
+--models  # 模型目录
+----AlexNet.py
+----DenseNet.py
+----GoogleNet.py
+----LeNet.py
+----ResNet.py
+----VGG.py
+----WideResNet.py
+--smmg.py # 测试主程序
+--misc.py # 显式库
 ```
  
 ### 4.测试及结果分析
-**代码2用法**：         
+**用法**：   
 ```shell
-python smmg2.py --gpu_devices 0 1 2 3 --batch_size 768
-```
+python smsg.py --lr 0.001 --epoch 1 --trainBatchSize 10000 --testBatchSize 10000 --num_workers 2 --log "../output/" 
+
 optional arguments:   
-```
---resume            default=None    
---batch_size        default=768
---num_worker        default=4
---gpu_devices       default=None
+
 --lr                default=1e-3    learning rate
+--epoch             default=10     number of epochs tp train for
+--trainBatchSize    default=100     training batch size
+--testBatchSize     default=100     test batch size
+--cuda              default=torch.cuda.is_available()  whether cuda is in use
+--log               default="../output/"    storage logs/models
+--num_workers       default=4, type=int,    number of workers to load data
+--resume            default="../output/"    resume model 
+备注： 模型加载，再次训练这个功能没有做
+```
+**pytorch指定显卡的几种方式**   
+1.直接终端中设定：   
+```
+CUDA_VISIBLE_DEVICES=1 python my_script.py
+```
+2.python代码中设定：   
+```
+import os
+os.environ["CUDA_VISIBLE_DEVICES"] = "2"
+```
+3.使用函数 set_device
+```
+import torch
+torch.cuda.set_device(id)
 ```
 ## 二、Docker环境
 ### 1.环境准备
