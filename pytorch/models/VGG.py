@@ -1,4 +1,5 @@
 import torch.nn as nn
+import torch
 
 
 cfg = {
@@ -50,3 +51,10 @@ def VGG16():
 
 def VGG19():
     return VGG('VGG19')
+def test():
+    net = VGG19()
+    x = torch.randn(2,3,32,32)
+    y = net(x)
+    print(y.size())
+
+# test()

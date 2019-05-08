@@ -1,5 +1,6 @@
 import torch.nn as nn
 import math
+import torch
 
 
 def conv3x3(in_planes, out_planes, stride=1):
@@ -150,3 +151,10 @@ def resnet101(**kwargs):
 
 def resnet152(**kwargs):
     return ResNet(Bottleneck, [3, 8, 36, 3], **kwargs)
+
+def test():
+    net = resnet18()
+    y = net(torch.randn(1,3,32,32))
+    print(y.size())
+
+# test()

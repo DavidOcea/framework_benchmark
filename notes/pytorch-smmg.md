@@ -95,7 +95,7 @@ The dataset is divided into five training batches and one test batch, each with 
 ----VGG.py
 ----WideResNet.py
 --smmg.py # 测试主程序
---misc.py # 显式库
+--until.py # 显式库
 ```
  
 ### 4.测试及结果分析
