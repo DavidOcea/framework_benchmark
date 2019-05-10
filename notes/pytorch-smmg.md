@@ -53,10 +53,6 @@ Wed May  8 21:38:46 2019
 conda create --name pytorch python=3.6
 source activate pytorch
 pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pytorch torchvision tensorboardx
-或者
-（我使用的）   
-conda install pytorch torchvision 
-pip install -i https://pypi.tuna.tsinghua.edu.cn/simple  tensorboardx
 ```
 ```shell
 pip list 
@@ -95,15 +91,30 @@ The dataset is divided into five training batches and one test batch, each with 
 ----VGG.py
 ----WideResNet.py
 --smmg.py # 测试主程序
+--smmg_dist.py # 测试主程序
 --until.py # 显式库
 ```
  
 ### 4.测试及结果分析
-**用法**：   
+**用法-1**：   
 ```shell
-python smmg.py --lr 0.001 --epoch 1 
-
+python smmg.py   
+smmg.py 使用torch.nn.DataParallel方法进行数据分布式。   
+参数说明： 
+--lr,               default=0.001, type=float, help='learning rate'
+--epoch,            default=10, type=int, help='number of epochs tp train for'
+--trainBatchSize,   default=1000, type=int, help='training batch size'
+--testBatchSize,    default=1000, type=int, help='testing batch size'
+--cuda,             default=torch.cuda.is_available(), type=bool, help='whether cuda is in use'
+--log,              default="../output/smmg.pkl", type=str, help='storage logs/models'
+--num_workers,      default=4, type=int, help='number of workers to load data'
+--resume,           default=None, type=str, help='resume from checkpoint,such as ../output/'
+--net,              default='wideresnet', type=str, help='use net '
+--gpunum,           default='2', type=int, help='number of gpu , such as 2 '
+--parallel,         default='dataparallel', help='way of Parallel,dataparallel or distributed'
 ```
+**用法-2**：     
+
 **pytorch指定显卡的几种方式**   
 1.直接终端中设定：   
 ```

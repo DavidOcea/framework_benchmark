@@ -18,27 +18,27 @@ import argparse
 from models import *
 from utils import progress_bar
 
-# 参数解析
-parser = argparse.ArgumentParser(description='PyTorch CIFAR10 Training')
-parser.add_argument('--lr', default=0.01, type=float, help='learning rate')
-parser.add_argument('--epoch', default=4, type=int, help='epoch')
-parser.add_argument('--resume', '-r', default=None, help='resume from checkpoint')
-parser.add_argument('--log', default="../output/smmg.pkl", help='resume from checkpoint')
-parser.add_argument('--net', default='res18')
-parser.add_argument('--batch_size', default='128')
+# 1.参数解析
+parser = argparse.ArgumentParser(description="cifar-10 with PyTorch")
+parser.add_argument('--lr', default=0.001, type=float, help='learning rate')
+parser.add_argument('--epoch', default=10, type=int, help='number of epochs tp train for')
+parser.add_argument('--trainBatchSize', default=1000, type=int, help='training batch size')
+parser.add_argument('--testBatchSize', default=1000, type=int, help='testing batch size')
+parser.add_argument('--cuda', default=torch.cuda.is_available(), type=bool, help='whether cuda is in use')
+parser.add_argument('--log', default="../output/smmg.pkl", type=str, help='storage logs/models')
+parser.add_argument('--num_workers', default=4, type=int, help='number of workers to load data')   
+parser.add_argument('--resume', default=None, type=str, help='resume from checkpoint,such as ../output/')
+parser.add_argument('--net', default='wideresnet', type=str, help='use net ')
+parser.add_argument('--gpunum', default='2', type=int, help='number of gpu , such as 2 ')
+parser.add_argument('--parallel', default='dataparallel', help='way of Parallel,dataparallel or distributed')
 args = parser.parse_args()
 
-# 获取超参数
-bs = int(args.batch_size)
-device = 'cuda' if torch.cuda.is_available() else 'cpu'
-resume = str(args.resume)
-log = str(args.log)
 epoch = int(args.epoch)
 best_acc = 0  # best test accuracy
 start_epoch = 0  # start from epoch 0 or last checkpoint epoch
 
-# 数据集准备
-print('==> Preparing data..')
+# 2. 数据集准备
+print('====>>>> Preparing data..')
 transform_train = transforms.Compose([
     transforms.RandomCrop(32, padding=4),
     transforms.RandomHorizontalFlip(),
@@ -52,28 +52,39 @@ transform_test = transforms.Compose([
 ])
 
 trainset = torchvision.datasets.CIFAR10(root='../data', train=True, download=True, transform=transform_train)
-trainloader = torch.utils.data.DataLoader(trainset, batch_size=bs, shuffle=True, num_workers=8)
+trainloader = torch.utils.data.DataLoader(trainset, batch_size=args.trainBatchSize, shuffle=True, num_workers=args.num_workers)
 
 testset = torchvision.datasets.CIFAR10(root='../data', train=False, download=True, transform=transform_test)
-testloader = torch.utils.data.DataLoader(testset, batch_size=100, shuffle=False, num_workers=8)
+testloader = torch.utils.data.DataLoader(testset, batch_size=args.testBatchSize, shuffle=False, num_workers=args.num_workers)
 
 classes = ('plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
 
-# 网络准备
-print('==> Building model..')
+# 3. 网络准备
+print('====>>>> Building model..')
+if args.net == "wideresnet":
+    net = WideResNet(depth=28, num_classes=10)
+else:
+    net = WideResNet(depth=28, num_classes=10)
 
-net = WideResNet(depth=28, num_classes=10)
-net = net.to(device)
+device = 'cuda' if args.cuda else 'cpu'
 if device == 'cuda':
-    net = torch.nn.DataParallel(net) # make parallel
-    # net = torch.nn.DataParallel(ResNet(ResidualBlock, [2, 2, 2, 2]),device_ids=gpulist).cuda()
-    cudnn.benchmark = True
-
+    gpulist = list(range(args.gpunum))
+    if args.parallel == "dataparallel":
+        print("====>>>>running on:",gpulist)
+        net = torch.nn.DataParallel(net, device_ids = gpulist).cuda() # make parallel
+        # net = net.to(device)
+        cudnn.benchmark = True
+    elif args.parallel == "distributed":
+        net = torch.nn.DataParallel(net) # make parallel
+    else:
+        net = torch.nn.DataParallel(net) # make parallel
+        # net = torch.nn.DataParallel(ResNet(ResidualBlock, [2, 2, 2, 2]),device_ids=gpulist).cuda()
+    
 if  args.resume:
     # Load checkpoint.
     print('==> Resuming from checkpoint..')
-    assert os.path.isdir(resume), 'Error: no checkpoint directory found!'
-    checkpoint = torch.load(resume)
+    assert os.path.exists(args.resume), 'Error: no checkpoint file found!'
+    checkpoint = torch.load(args.resume)
     net.load_state_dict(checkpoint['net'])
     best_acc = checkpoint['acc']
     start_epoch = checkpoint['epoch']
@@ -81,9 +92,9 @@ if  args.resume:
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.SGD(net.parameters(), lr=args.lr, momentum=0.9, weight_decay=5e-4)
 
-# Training
+# 4.网络训练
 def train(epoch):
-    print('\nEpoch: %d' % epoch)
+    print('\n====>>>> Epoch: %d' % epoch)
     net.train()
     train_loss = 0
     correct = 0
@@ -105,7 +116,7 @@ def train(epoch):
             % (train_loss/(batch_idx+1), 100.*correct/total, correct, total))
     return train_loss/(batch_idx+1)
 
-
+# 5.模型测试
 def test(epoch):
     global best_acc
     net.eval()
@@ -129,23 +140,20 @@ def test(epoch):
     # Save checkpoint.
     acc = 100.*correct/total
     if acc > best_acc:
-        print('Saving..')
+        print('====>>>> Model Saving..')
         state = {
             'net': net.state_dict(),
             'acc': acc,
             'epoch': epoch,
         }
-        if not os.path.isdir('checkpoint'):
-            os.mkdir('checkpoint')
-        torch.save(state, log)
+        # if not os.path.isdir('checkpoint'):
+        #     os.mkdir('checkpoint')
+        torch.save(state, args.log)
         best_acc = acc
 
-list_loss = []
 
-for epoch in range(start_epoch, start_epoch+epoch):
-    trainloss = train(epoch)
-    test(epoch)
+if __name__=="__main__":
+    for epoch in range(start_epoch, start_epoch + args.epoch):
+        trainloss = train(epoch)
+        test(epoch)
     
-    # list_loss.append(trainloss)
-    # print(list_loss)
-# print("list_loss:", list_loss)

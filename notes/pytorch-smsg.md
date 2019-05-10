@@ -118,5 +118,5 @@ torch.cuda.set_device(id)
 nvidia-docker run -itd -v /root/felix/:/workspace fusimeng/ai.pytorch:v5
 nvidia-docker exec -it xxx bash
 ```
-**代码1/2用法**：   
+**代码用法**：   
 同上
