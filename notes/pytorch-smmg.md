@@ -161,3 +161,9 @@ nvidia-docker exec -it xxx bash
 ```
 **用法**：   
 同上
+   
+**-----------------------------------------------------------------------**   
+# 参考   
+https://github.com/dnddnjs/pytorch-multigpu   
+https://github.com/kentaroy47/pytorch-mgpu-cifar10   
+https://github.com/icpm/pytorch-cifar10   
