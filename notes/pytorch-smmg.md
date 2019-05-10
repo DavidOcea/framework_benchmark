@@ -113,8 +113,24 @@ smmg.py 使用torch.nn.DataParallel方法进行数据分布式。
 --gpunum,           default='2', type=int, help='number of gpu , such as 2 '
 --parallel,         default='dataparallel', help='way of Parallel,dataparallel or distributed'
 ```
-**用法-2**：     
+**用法-2**：  
+smmg_dist.py 使用torch.nn.parallel.DistributedDataParallel方法进行数据分布式。    
+```
+python train.py --gpu_device 0 1 2 3 --batch_size 768  
+参数说明：
+--lr              default=0.1, help=''
+--resume          default=None, help=''
+--batch_size      type=int, default=768, help=''
+--num_workers     type=int, default=4, help=''
+--gpu_devices     type=int, nargs='+', default=None, help=""
 
+--gpu             default=None, type=int, help='GPU id to use.'
+--dist-url        default='tcp://127.0.0.1:3456', type=str, help=''
+--dist-backend    default='gloo', type=str, help=''
+--rank            default=0, type=int, help=''
+--world_size      default=1, type=int, help=''
+--distributed     action='store_true', help=''
+```
 **pytorch指定显卡的几种方式**   
 1.直接终端中设定：   
 ```
