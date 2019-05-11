@@ -104,9 +104,9 @@ python mmmg_mnist.py --init-method tcp://192.168.31.150:22225 --rank 1 --world-s
 ### 2.用法
 ```
 machine 1 ip 192.168.31.150
-python 3.py --init-method tcp://192.168.31.150:23456 --rank 0 --world-size 2   
+python mmmg_data.py --init-method tcp://192.168.31.150:23456 --rank 0 --world-size 2   
 machine 2 ip 192.168.31.170
-python 3.py --init-method tcp://192.168.31.150:23456 --rank 1 --world-size 2  
+python mmmg_data.py --init-method tcp://192.168.31.150:23456 --rank 1 --world-size 2  
 ```
 用法：   
 ```

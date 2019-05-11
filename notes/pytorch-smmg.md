@@ -116,7 +116,7 @@ smmg.py 使用torch.nn.DataParallel方法进行数据分布式。
 **用法-2**：  
 smmg_dist.py 使用torch.nn.parallel.DistributedDataParallel方法进行数据分布式。    
 ```
-python train.py --gpu_device 0 1 2 3 --batch_size 768  
+python smmg_dist.py --gpu_device 0 1 2 3 --batch_size 768  
 参数说明：
 --lr              default=0.1, help=''
 --resume          default=None, help=''
