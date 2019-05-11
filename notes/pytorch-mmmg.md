@@ -133,6 +133,8 @@ python mmmg_data.py --init-method tcp://192.168.31.150:23456 --rank 1 --world-si
 [7] https://github.com/ShigekiKarita/pytorch-distributed-slurm-example   
 [8] https://github.com/xhzhao/PyTorch-MPI-DDP-example   
 [9] https://github.com/seba-1511/dist_tuto.pth  
-[10] https://github.com/alexis-jacq/Pytorch-DPPO   
+[10] https://github.com/alexis-jacq/Pytorch-DPPO  
+[11] https://blog.csdn.net/qq_20791919/article/details/79057648   
+[12] https://blog.csdn.net/qq_20791919/article/details/79057871   
 
 
