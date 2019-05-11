@@ -120,8 +120,8 @@ python 3.py --init-method tcp://192.168.31.150:23456 --rank 1 --world-size 2
 --root            type=str, default='../data'
 --batch-size      type=int, default=128
 ```
-[machine 1 log](log5.md)
-[machine 2 log](log6.md)
+[machine 1 log](log5.md)   
+[machine 2 log](log6.md)    
 **------------------------------------------------------------------------------------------**    
 # 参考
 [1] https://zhuanlan.zhihu.com/p/38949622    
