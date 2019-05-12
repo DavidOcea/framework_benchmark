@@ -87,17 +87,82 @@ wheel       0.33.1
 ### 3.安装horovod环境
 参考：https://github.com/fusimeng/Horovod/blob/master/notes/install.md   
 ### 4.配置免密登录
-
+(1) 安装SSH【两个节点】：  
+`sudo apt-get install ssh`  
+(2) 启动ssh服务【两个服务器】：  
+`service ssh restart`  
+(3) 生成公、私密钥【两个服务器】：   
+`ssh-keygen -t rsa`   
+(4) 将公钥加到用于认证的公钥文件中：  
+在服务器-1:  
+`cat ~/.ssh/id_rsa.pub`   
+自服务器-2:  
+`cat ~/.ssh/id_rsa.pub`   
+将上述两个命令输出的公钥分别放入服务器-1和2的这个文件下：   
+`~/.ssh/authorized_keys`    
+或  
+`cp ~/.ssh/id_dsa.pub ~/.ssh/authorized_keys`     
+`cat ~/.ssh/id_dsa.pub >> ~/.ssh/authorized_keys`    
+(5) 验证是否SSH安装成功：
+`ssh -version`   
+(6) 免密码登陆测试：
+`ssh machine-2 # from machine-1`   
+  
+或者一种更为简单的方法：   
+(1) 在两台主机分别执行   
+```
+vim /etc/hosts  
+写入以下内容：   
+192.168.31.150  ff150
+192.168.31.170  ff170
+```
+(2) 在两台主机分别执行   
+```
+ssh-keygen
+ssh-copy-id [ip/hostname]
+```
 ### 5.代码结构 
 ```
 -horovod
 --pytorch_mnist.py
 ```
 
-### 6.用法
+### 6.用法  目前还有问题？
+主机-1（192.168.31.150）  
 ```
-$ horovodrun -np 4 -H localhost:4 python pytorch_mnist.py
+# horovodrun -np 2 -H 192.168.31.150:1,192.168.31.170:1 python pytorch_mnist.py
+```
+主机-2（192.168.31.170）  
+```
+# horovodrun -np 2 -H 192.168.31.150:1,192.168.31.170:1 python pytorch_mnist.py
 ```
 [日志](../horovod/horovod_log2.md)
 
 ## 二、Docker环境
+### 1.主机环境
+在上述主机环境中安装docker。进行测试。   
+`fusimeng/ai.horovod:v1`   
+```
+apt install net-tools
+apt install iputils-ping
+```
+```
+nvidia-docker run -itd -v /root/:/workspace --name=ff1 --hostname=ff1 fusimeng/ai.horovod:v1  
+nvidia-docker run -itd -v /root/:/workspace --name=ff2 --hostname=ff2 fusimeng/ai.horovod:v1
+```
+### 2.配置免密登录   
+(1) 在两台主机分别执行   
+```
+vim /etc/hosts  
+写入以下内容：   
+192.168.31.150  ff1
+192.168.31.170  ff2
+```
+(2) 在两台主机分别执行   
+```
+ssh-keygen
+ssh-copy-id [ip/hostname]
+```
+### 3.代码结构
+同上
+### 4.用法
