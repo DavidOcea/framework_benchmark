@@ -41,12 +41,13 @@ if args.cuda:
 
 
 kwargs = {'num_workers': 1, 'pin_memory': True} if args.cuda else {}
-train_dataset = \
+# train_dataset = \
     # datasets.MNIST('data-%d' % hvd.rank(), train=True, download=True,
     #                transform=transforms.Compose([
     #                    transforms.ToTensor(),
     #                    transforms.Normalize((0.1307,), (0.3081,))
     #                ]))
+train_dataset = \
     datasets.MNIST('../data', train=True, download=True,
                    transform=transforms.Compose([
                        transforms.ToTensor(),
