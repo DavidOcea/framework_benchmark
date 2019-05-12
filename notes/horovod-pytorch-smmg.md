@@ -60,8 +60,11 @@ Sun May 12 17:45:27 2019
 -horovod
 --pytorch_mnist.py
 ```
-$ horovodrun -np 4 -H localhost:4 python pytorch_mnist.py
-```
+
 ### 4.用法
 ```
+$ horovodrun -np 4 -H localhost:4 python pytorch_mnist.py
+```
+[日志](../horovod/horovod_log1.md)
 ## 二、Docker环境
+同上
