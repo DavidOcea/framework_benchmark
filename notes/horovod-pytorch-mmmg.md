@@ -82,19 +82,8 @@ apt install iputils-ping
 nvidia-docker run -itd -v /root/:/workspace --name=ff1 --hostname=ff1 fusimeng/ai.horovod:v1  
 nvidia-docker run -itd -v /root/:/workspace --name=ff2 --hostname=ff2 fusimeng/ai.horovod:v1
 ```
-### 2.配置免密登录   
-(1) 在两台主机分别执行   
-```
-vim /etc/hosts  
-写入以下内容：   
-192.168.31.150  ff1
-192.168.31.170  ff2
-```
-(2) 在两台主机分别执行   
-```
-ssh-keygen
-ssh-copy-id [ip/hostname]
-```
-### 3.代码结构
+
+### 2.代码结构
 同上
-### 4.用法
+### 3.用法
+同上
