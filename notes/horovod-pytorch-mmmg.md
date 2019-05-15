@@ -1,60 +1,28 @@
 # Horovod + Pytorch 多机多卡标准测试
 ## 一、主机环境测试
 ### 1.两台主机
+**===>>>硬件**   
 |主机名|系统|IP|GPUs|
 |:--:|:--:|:--:|:--:|  
-|ubuntu|Ubuntu16.04|192.168.31.150|Tesla P40 * 1|
-|ff170|Ubuntu16.04|192.168.31.170|Tesla P40 * 1|
+|sdu3|Ubuntu16.04|192.168.199.53|1080ti * 4|
+|sdu4|Ubuntu16.04|192.168.199.54|1080ti * 4|  
+   
+**===>>>系统**   
+OS:[ubuntu16.04](https://github.com/fusimeng/ParallelComputing/blob/master/notes/serverinstall.md)    
 
-OS:ubuntu16.04   
-CUDA:10.0   
-cuDNN：7.4   
-
-machine-1:  
-```
-(pytorch) root@ubuntu:~/package/horovod# nvidia-smi
-Sun May 12 19:05:51 2019       
-+-----------------------------------------------------------------------------+
-| NVIDIA-SMI 410.79       Driver Version: 410.79       CUDA Version: 10.0     |
-|-------------------------------+----------------------+----------------------+
-| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
-| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
-|===============================+======================+======================|
-|   0  Tesla P40           Off  | 00000000:03:00.0 Off |                  Off |
-| N/A   41C    P0    45W / 250W |      0MiB / 24451MiB |      3%      Default |
-+-------------------------------+----------------------+----------------------+
-                                                                               
-+-----------------------------------------------------------------------------+
-| Processes:                                                       GPU Memory |
-|  GPU       PID   Type   Process name                             Usage      |
-|=============================================================================|
-|  No running processes found                                                 |
-+-----------------------------------------------------------------------------+
-```
-machine-2:   
-```
-(pytorch) root@ff170:~/package/nccl-tests# nvidia-smi
-Sun May 12 19:06:28 2019       
-+-----------------------------------------------------------------------------+
-| NVIDIA-SMI 418.56       Driver Version: 418.56       CUDA Version: 10.1     |
-|-------------------------------+----------------------+----------------------+
-| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
-| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
-|===============================+======================+======================|
-|   0  Tesla P40           Off  | 00000000:03:00.0 Off |                    0 |
-| N/A   35C    P0    44W / 250W |      0MiB / 22919MiB |      4%      Default |
-+-------------------------------+----------------------+----------------------+
-                                                                               
-+-----------------------------------------------------------------------------+
-| Processes:                                                       GPU Memory |
-|  GPU       PID   Type   Process name                             Usage      |
-|=============================================================================|
-|  No running processes found                                                 |
-+-----------------------------------------------------------------------------+
-```
+**===>>>GPU Driver**   
+[GPU Driver](https://github.com/fusimeng/ParallelComputing/blob/master/notes/driverinstall.md)   
+  
+**===>>>CUDA**   
+[CUDA10.0 & cuDNN7.4](https://github.com/fusimeng/ParallelComputing/blob/master/notes/cudainstall.md)   
+### 2.安装NCCL2
+[参考链接](https://github.com/fusimeng/Horovod/blob/master/notes/install.md#1%E5%AE%89%E8%A3%85nccl-2)
+### 3.安装GPUDirect
+[参考链接](https://github.com/fusimeng/Horovod/blob/master/notes/install.md#2%E5%AE%89%E8%A3%85gpudirectoptional)
+### 4.安装Openmpi
+[参考链接](https://github.com/fusimeng/Horovod/blob/master/notes/install.md#3%E5%AE%89%E8%A3%85open-mpi)   
 ### 2.python环境
-(1) [安装Anaconda](https://github.com/fusimeng/ai_tools)    
-(2) 使用Anaconda，创建所需的环境   
+[安装Anaconda](https://github.com/fusimeng/ai_tools),使用Anaconda，创建所需的环境   
 * python3.6
 * numpy
 * pytorch 1.0.0
@@ -62,7 +30,7 @@ Sun May 12 19:06:28 2019
 ```shell
 conda create --name pytorch python=3.6
 source activate pytorch
-pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pytorch torchvision tensorboardx
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pytorch torchvision
 ```
 ```shell
 pip list 
@@ -86,41 +54,7 @@ wheel       0.33.1
 
 ### 3.安装horovod环境
 参考：https://github.com/fusimeng/Horovod/blob/master/notes/install.md   
-### 4.配置免密登录
-(1) 安装SSH【两个节点】：  
-`sudo apt-get install ssh`  
-(2) 启动ssh服务【两个服务器】：  
-`service ssh restart`  
-(3) 生成公、私密钥【两个服务器】：   
-`ssh-keygen -t rsa`   
-(4) 将公钥加到用于认证的公钥文件中：  
-在服务器-1:  
-`cat ~/.ssh/id_rsa.pub`   
-自服务器-2:  
-`cat ~/.ssh/id_rsa.pub`   
-将上述两个命令输出的公钥分别放入服务器-1和2的这个文件下：   
-`~/.ssh/authorized_keys`    
-或  
-`cp ~/.ssh/id_dsa.pub ~/.ssh/authorized_keys`     
-`cat ~/.ssh/id_dsa.pub >> ~/.ssh/authorized_keys`    
-(5) 验证是否SSH安装成功：
-`ssh -version`   
-(6) 免密码登陆测试：
-`ssh machine-2 # from machine-1`   
-  
-或者一种更为简单的方法：   
-(1) 在两台主机分别执行   
-```
-vim /etc/hosts  
-写入以下内容：   
-192.168.31.150  ff150
-192.168.31.170  ff170
-```
-(2) 在两台主机分别执行   
-```
-ssh-keygen
-ssh-copy-id [ip/hostname]
-```
+
 ### 5.代码结构 
 ```
 -horovod
