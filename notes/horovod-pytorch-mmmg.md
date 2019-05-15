@@ -21,7 +21,8 @@ OS:[ubuntu16.04](https://github.com/fusimeng/ParallelComputing/blob/master/notes
 [参考链接](https://github.com/fusimeng/Horovod/blob/master/notes/install.md#2%E5%AE%89%E8%A3%85gpudirectoptional)
 ### 4.安装Openmpi
 [参考链接](https://github.com/fusimeng/Horovod/blob/master/notes/install.md#3%E5%AE%89%E8%A3%85open-mpi)   
-### 2.python环境
+### 5.python环境(pytorch+horovod)
+**===>>>安装Pytorch环境**   
 [安装Anaconda](https://github.com/fusimeng/ai_tools),使用Anaconda，创建所需的环境   
 * python3.6
 * numpy
@@ -52,16 +53,13 @@ torchvision 0.2.1
 wheel       0.33.1 
 ```
 
-### 3.安装horovod环境
-参考：https://github.com/fusimeng/Horovod/blob/master/notes/install.md   
-
-### 5.代码结构 
+**===>>>[安装horovod环境](https://github.com/fusimeng/Horovod/blob/master/notes/install.md#4-horovodwith-pip)**    
+### 6.代码结构 
 ```
 -horovod
 --pytorch_mnist.py
 ```
-
-### 6.用法  目前还有问题？
+### 7.用法  目前还有问题？
 主机-1（192.168.31.150）  
 ```
 # horovodrun -np 2 -H 192.168.31.150:1,192.168.31.170:1 python pytorch_mnist.py
