@@ -1,14 +1,14 @@
 # 深度学习框架标准测试程序
 ## 一.框架标准测试
-### 1.Pytorch
-* [单机单卡](notes/pytorch-smsg.md)
-* [单机多卡](notes/pytorch-smmg.md)
-* [多机多卡](notes/pytorch-mmmg.md)
+|   框架      |     单机单卡   |    单机多卡    |   多机多卡     |
+|:-----------:|:---------:|:-----------:|:--------:|
+|Pytorch|[Link](notes/pytorch-smsg.md)|[Link](notes/pytorch-smmg.md)| [Link](notes/pytorch-mmmg.md)|
 
 ## 二、Horovod标准测试
-### 1.Pytorch
-* [单机多卡](notes/horovod-pytorch-smmg.md)
-* [多机多卡](notes/horovod-pytorch-mmmg.md)
+|   框架      |     单机单卡   |    单机多卡    |   多机多卡     |
+|:-----------:|:---------:|:-----------:|:--------:|
+|Pytorch|XXX|[Link](notes/horovod-pytorch-smmg.md)| [Link](notes/horovod-pytorch-mmmg.md)|
+
 ## 三、ONNX标准测试
 |   框架      |     安装   |    导入    |   导出     |
 |:-----------:|:---------:|:-----------:|:--------:|
