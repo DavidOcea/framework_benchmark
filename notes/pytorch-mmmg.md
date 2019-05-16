@@ -51,8 +51,8 @@ $ python mmmg_toy.py --rank 0 --world-size 2
 Terminal 2
 $ python mmmg_toy.py --rank 1 --world-size 2
 ```
-[Terminal 1 的日志](terminal1.md)   
-[Terminal 2 的日志](terminal2.md)
+[Terminal 1 的日志](pytorch-mmmg-log-1.md)   
+[Terminal 2 的日志](pytorch-mmmg-log-2.md)
    
 **在多机中使用**   
 ```
@@ -63,8 +63,8 @@ Machine 2
 
 $ python mmmg_toy.py --rank 1 --world-size 2 --ip 192.168.31.150 --port 22000
 ```
-[Machine 1 的日志](log1.md)   
-[Machine 2 的日志](log2.md)   
+[Machine 1 的日志](pytorch-mmmg-log-3.md)   
+[Machine 2 的日志](pytorch-mmmg-log-4.md)   
 ## 三、标准测试程序————2（mnist）
 ### 1.代码结构
 ```
@@ -93,8 +93,8 @@ python mmmg_mnist.py --init-method tcp://192.168.31.150:22225 --rank 1 --world-s
 --rank             type=int
 --world-size       type=int
 ```
-[machine 1 日志](log3.md)    
-[machine 2 日志](log4.md)  
+[machine 1 日志](pytorch-mmmg-log-5.md)    
+[machine 2 日志](pytorch-mmmg-log-6.md)  
 ## 四、标准程序测试————3（mnist）
 ### 1.代码结构
 ```
@@ -120,8 +120,8 @@ python mmmg_data.py --init-method tcp://192.168.31.150:23456 --rank 1 --world-si
 --root            type=str, default='../data'
 --batch-size      type=int, default=128
 ```
-[machine 1 log](log5.md)   
-[machine 2 log](log6.md)    
+[machine 1 log](pytorch-mmmg-log-7.md)   
+[machine 2 log](pytorch-mmmg-log-8.md)    
 **------------------------------------------------------------------------------------------**    
 # 参考
 [1] https://zhuanlan.zhihu.com/p/38949622    
