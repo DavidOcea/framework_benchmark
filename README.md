@@ -7,7 +7,7 @@
 ## 二、Horovod标准测试
 |   框架      |     单机单卡   |    单机多卡    |   多机多卡     |
 |:-----------:|:---------:|:-----------:|:--------:|
-|Pytorch|XXX|[Link](notes/horovod-pytorch-smmg.md)| [Link](notes/horovod-pytorch-mmmg.md)|
+|Pytorch|N/A|[Link](notes/horovod-pytorch-smmg.md)| [Link](notes/horovod-pytorch-mmmg.md)|
 
 ## 三、ONNX标准测试
 |   框架      |     安装   |    导入    |   导出     |
