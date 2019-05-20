@@ -10,8 +10,12 @@
 |Pytorch|N/A|[Link](notes/horovod-pytorch-smmg.md)| [Link](notes/horovod-pytorch-mmmg.md)|
 
 ## 三、ONNX标准测试
-|   框架      |     安装   |    导入    |   导出     |
-|:-----------:|:---------:|:-----------:|:--------:|
-|Pytorch|[Link](notes/onnx-pytorch-install.md)|[Link](notes/onnx-pytorch-import.md)|[Link](notes/onnx-pytorch-export.md)
+|[框架/框架](https://onnx.ai/getting-started)|[Pytorch](notes/onnx/onnx-pytorch.md)|MxNet|TensorFlow|CNTK|
+|:-------:|:-----:|:---:|:--------:|:---:|
+|Pytorch |-|[Link](notes/onnx-pytorch_onnx_mxnet.md)|N/A|N/A|
+|MxNet|N/A|-|N/A|N/A|
+|TensorFlow|N/A|N/A|-|N/A|
+|CNTK|N/A|N/A|N/A|-|
+
 ## 四、TensorRT标准测试
 ## 五、Tensorboard标准测试
