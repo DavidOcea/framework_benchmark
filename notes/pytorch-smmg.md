@@ -208,3 +208,9 @@ torch.cuda.set_device(id)
 ### 3.代码准备
 同上
 ### 4.测试
+
+-------
+# 参考   
+[1] https://github.com/dnddnjs/pytorch-multigpu   
+[2] https://github.com/kentaroy47/pytorch-mgpu-cifar10   
+[3] https://github.com/icpm/pytorch-cifar10 
