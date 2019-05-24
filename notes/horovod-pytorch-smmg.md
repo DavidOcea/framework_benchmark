@@ -131,20 +131,26 @@ wheel        0.33.1
 参考链接：[🔗](https://github.com/fusimeng/Horovod/blob/master/notes/install.md#3%E5%AE%89%E8%A3%85open-mpi)   
 #### （6） 安装Horovod（with pip）
 参考链接：[🔗](https://github.com/fusimeng/Horovod/blob/master/notes/install.md#4-horovodwith-pip)   
- 
-
-### 2.安装环境
-参考：https://github.com/fusimeng/Horovod/blob/master/notes/install.md   
-### 3.代码结构 
+### 2.数据准备
+下载[mnist](http://yann.lecun.com/exdb/mnist/)数据集，放在data目录下。   
+### 3.代码准备
+#### （1）.代码结构 
 ```
 -horovod
 --pytorch_mnist.py
 ```
 
-### 4.用法
+#### （2）.用法
 ```
 $ horovodrun -np 4 -H localhost:4 python pytorch_mnist.py
 ```
 [日志](../horovod/horovod_log1.md)
-## 二、Docker环境
+## 三、Docker环境测试
+### 1.Docker环境准备
+镜像：fusimeng/ai-pytorch:16.04-10.0-3.5-1.1.0   
+### 2.数据准备
+同上
+### 3.代码准备
+同上
+### 4.测试
 同上
