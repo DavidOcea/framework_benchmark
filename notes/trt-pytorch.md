@@ -1,9 +1,26 @@
 # 使用TensorRT5加速pytorch模型标准测试
-通过pytorch搭建卷积神经网络完成手写识别任务，并将训练好的模型以多种方式部署到TensorRT中加速。
-### 硬件环境   
+## TREE
+* 一、主机环境   
+* 二、主机环境测试
+* 三、Docker环境测试  
+## 一、主机环境  
+* CPU  
+```
+cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c 
+20  Genuine Intel(R) CPU @ 2.40GHz
+```
+* Memory   
+```
+free -h
+              total        used        free      shared  buff/cache   available
+Mem:            31G        652M         19G         77M         11G         30G
+Swap:          975M        192M        783M
+或者cat /proc/meminfo
+```
+* GPU   
 ```
 nvidia-smi
-Wed May  8 16:53:55 2019       
+Fri May 24 13:31:05 2019       
 +-----------------------------------------------------------------------------+
 | NVIDIA-SMI 410.79       Driver Version: 410.79       CUDA Version: 10.0     |
 |-------------------------------+----------------------+----------------------+
@@ -11,7 +28,7 @@ Wed May  8 16:53:55 2019
 | Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
 |===============================+======================+======================|
 |   0  Tesla P40           Off  | 00000000:03:00.0 Off |                  Off |
-| N/A   39C    P0    45W / 250W |      0MiB / 24451MiB |      3%      Default |
+| N/A   41C    P0    45W / 250W |      0MiB / 24451MiB |      3%      Default |
 +-------------------------------+----------------------+----------------------+
                                                                                
 +-----------------------------------------------------------------------------+
@@ -21,16 +38,48 @@ Wed May  8 16:53:55 2019
 |  No running processes found                                                 |
 +-----------------------------------------------------------------------------+
 ```
-## 一、主机环境
-### 1.环境准备
-(1) [安装Anaconda](https://github.com/fusimeng/ai_tools)    
-(2) 使用Anaconda，创建所需的环境   
+* OS   
+``` 
+head -n 1 /etc/issue
+Ubuntu 16.04.5 LTS \n \l
+```
+* Kernal   
+``` 
+uname -a
+Linux ubuntu 4.4.0-131-generic #157-Ubuntu SMP Thu Jul 12 15:51:36 UTC 2018 x86_64 x86_64 x86_64 GNU/Linux
+```
+* [CUDA 10.0.x](https://github.com/fusimeng/ParallelComputing/blob/master/notes/cudainstall.md)   
+```   
+cat /usr/local/cuda/version.txt
+CUDA Version 10.0.130
+
+nvcc -V
+nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2018 NVIDIA Corporation
+Built on Sat_Aug_25_21:08:01_CDT_2018
+Cuda compilation tools, release 10.0, V10.0.130
+```
+* [cuDNN 7.5.x](https://github.com/fusimeng/ParallelComputing/blob/master/notes/cudainstall.md)   
+``` 
+cat /usr/local/cuda/include/cudnn.h | grep CUDNN_MAJOR -A 2
+#define CUDNN_MAJOR 7
+#define CUDNN_MINOR 5
+#define CUDNN_PATCHLEVEL 0
+--
+#define CUDNN_VERSION (CUDNN_MAJOR * 1000 + CUDNN_MINOR * 100 + CUDNN_PATCHLEVEL)
+#include "driver_types.h"
+```
+* [Docker](https://github.com/fusimeng/ParallelComputing/blob/master/notes/docker.md)
+* [Nvidia-Docker](https://github.com/fusimeng/ParallelComputing/blob/master/notes/nvdocker.md)   
+## 二、主机环境测试
+### 1.主机环境准备
+#### （1）.安装Anaconda
+参考链接：[🔗](https://github.com/fusimeng/ai_tools)    
+#### （2）. 使用Anaconda，创建所需的环境   
 ```shell
 conda create --name pytorch python=3.6
 source activate pytorch
-pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pytorch torchvision tensorboardx pycuda
-numpy
-
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple torch torchvision tensorboardx
 ```
 ```
 pip list 
@@ -53,12 +102,59 @@ torch        1.0.1
 torchvision  0.2.1   
 wheel        0.33.1
 ```
-(3) 安装tensorrt   
-[link](https://github.com/fusimeng/TensorRT/blob/master/notes/install.md)   
-(4) 安装opencv   
-[link](https://github.com/fusimeng/ParallelComputing/blob/master/notes/dockerai-2.md#2-%E4%B8%8B%E8%BD%BDopencv-410)   
+#### (3) 安装tensorrt   
+参考链接：[🔗](https://github.com/fusimeng/TensorRT/blob/master/notes/install.md)   
+#### (4) 安装opencv(可选，代码需要在安装）   
+参考链接：[🔗](https://github.com/fusimeng/ParallelComputing/blob/master/notes/dockerai-2.md#2-%E4%B8%8B%E8%BD%BDopencv-410)   
+
 ### 2.数据准备
 下载[mnist数据集](http://yann.lecun.com/exdb/mnist/)数据集，放在data目录下。   
+### 3.标准代码测试-1
+#### （1） 代码准备       
+``` 
+-tensorrt   
+--test.py
+```
+#### （2）.测试
+**用法**：   
+```shell
+python test.py 
+```
+
+### 5. pytorch指定显卡的几种方式   
+1.直接终端中设定：   
+```
+CUDA_VISIBLE_DEVICES=1 python my_script.py
+```
+2.python代码中设定：   
+```
+import os
+os.environ["CUDA_VISIBLE_DEVICES"] = "2"
+```
+3.使用函数 set_device
+```
+import torch
+torch.cuda.set_device(id)
+```
+## 三、Docker环境测试
+### 1.Docker环境准备
+镜像：fusimeng/ai-pytorch:16.04-10.0-3.5-1.1.0   
+### 2.数据准备
+同上
+### 3.代码准备
+同上
+### 4.测试
+同上
+
+通过pytorch搭建卷积神经网络完成手写识别任务，并将训练好的模型以多种方式部署到TensorRT中加速。
+
+#
+
+
+
+
+### 2.数据准备
+
 ### 3.代码准备       
 ``` 
 -tensorrt 
