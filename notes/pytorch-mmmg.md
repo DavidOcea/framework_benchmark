@@ -200,8 +200,19 @@ python mmmg_data.py --init-method tcp://192.168.31.150:23456 --rank 1 --world-si
 --batch-size      type=int, default=128
 ```
 [machine 1 log](pytorch-mmmg-log-7.md)   
-[machine 2 log](pytorch-mmmg-log-8.md)    
-------------------------------------------------------------------------------------------    
+[machine 2 log](pytorch-mmmg-log-8.md)        
+## 三、Docker环境测试
+### 1.Docker环境准备
+镜像：fusimeng/ai-pytorch:16.04-10.0-3.5-1.1.0   
+### 2.数据准备
+同上
+### 3.代码准备
+同上
+### 4.测试
+同上   
+   
+   
+----------------------
 ## 参考
 [1] https://zhuanlan.zhihu.com/p/38949622    
 [2] https://chenyue.top/2019/03/28/%E5%B7%A5%E7%A8%8B-%E5%9B%9B-Pytorch%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F%E8%AE%AD%E7%BB%83/   
@@ -215,13 +226,5 @@ python mmmg_data.py --init-method tcp://192.168.31.150:23456 --rank 1 --world-si
 [10] https://github.com/alexis-jacq/Pytorch-DPPO  
 [11] https://blog.csdn.net/qq_20791919/article/details/79057648   
 [12] https://blog.csdn.net/qq_20791919/article/details/79057871   
-## 三、Docker环境测试
-### 1.Docker环境准备
-镜像：fusimeng/ai-pytorch:16.04-10.0-3.5-1.1.0   
-### 2.数据准备
-同上
-### 3.代码准备
-同上
-### 4.测试
-同上
+
 
