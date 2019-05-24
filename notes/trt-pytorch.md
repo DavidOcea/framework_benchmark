@@ -121,6 +121,31 @@ wheel        0.33.1
 python test.py 
 ```
 
+### 4.标准代码测试-2
+#### （1）代码准备       
+``` 
+-tensorrt 
+--Config.py：卷积神经网络配置参数
+--DataLoader.py：读取训练集与测试集
+--Network.py：卷积神经网络结构
+--OperateNetwork.py：对卷积神经网络的操作（训练，测试，保存读取权重，保存onnx）
+--TensorRTNet.py：三种方式创建引擎
+--main.py：主函数
+```
+```
+注意：
+(1)对于多输入模型保存onnx的方式：
+dummy_input0 = torch.FloatTensor(Batch_size, seg_length).to(torch.device("cuda"))  
+dummy_input1 = torch.FloatTensor(Batch_size, seg_length).to(torch.device("cuda"))  
+dummy_input2 = torch.FloatTensor(Batch_size, seg_length).to(torch.device("cuda"))  
+torch.onnx.export(model. (dummy_input0, dummy_input1, dummy_input2), filepath)  
+(2)TensorRT不支持int64，float64,因此模型不应该包含这两种数据类型的运算。
+```
+#### （2）.测试,有问题？
+**用法**：   
+```shell
+python main.py
+```
 ### 5. pytorch指定显卡的几种方式   
 1.直接终端中设定：   
 ```
@@ -155,42 +180,6 @@ torch.cuda.set_device(id)
 
 ### 2.数据准备
 
-### 3.代码准备       
-``` 
--tensorrt 
---Config.py：卷积神经网络配置参数
---DataLoader.py：读取训练集与测试集
---Network.py：卷积神经网络结构
---OperateNetwork.py：对卷积神经网络的操作（训练，测试，保存读取权重，保存onnx）
---TensorRTNet.py：三种方式创建引擎
---main.py：主函数
-```
-```
-注意：
-(1)对于多输入模型保存onnx的方式：
-dummy_input0 = torch.FloatTensor(Batch_size, seg_length).to(torch.device("cuda"))  
-dummy_input1 = torch.FloatTensor(Batch_size, seg_length).to(torch.device("cuda"))  
-dummy_input2 = torch.FloatTensor(Batch_size, seg_length).to(torch.device("cuda"))  
-torch.onnx.export(model. (dummy_input0, dummy_input1, dummy_input2), filepath)  
-(2)TensorRT不支持int64，float64,因此模型不应该包含这两种数据类型的运算。
-```
-### 4.测试及结果分析
-**用法**：   
-```shell
-python smsg.py --lr 0.001 --epoch 1 --trainBatchSize 10000 --testBatchSize 10000 --num_workers 2 --log "../output/" 
-
-optional arguments:   
-
---lr                default=1e-3    learning rate
---epoch             default=10     number of epochs tp train for
---trainBatchSize    default=100     training batch size
---testBatchSize     default=100     test batch size
---cuda              default=torch.cuda.is_available()  whether cuda is in use
---log               default="../output/"    storage logs/models
---num_workers       default=4, type=int,    number of workers to load data
---resume            default="../output/"    resume model 
-备注： 模型加载，再次训练这个功能没有做
-```
 **pytorch指定显卡的几种方式**   
 1.直接终端中设定：   
 ```
