@@ -94,7 +94,7 @@ cat /usr/local/cuda/include/cudnn.h | grep CUDNN_MAJOR -A 2
 * [Nvidia-Docker](https://github.com/fusimeng/ParallelComputing/blob/master/notes/nvdocker.md)   
 ## 二、主机环境测试
 ### 1.主机环境准备
-####（1）.安装Anaconda
+#### （1）.安装Anaconda
 参考链接：[🔗](https://github.com/fusimeng/ai_tools)    
 #### （2）. 使用Anaconda，创建所需的环境   
 ```shell
