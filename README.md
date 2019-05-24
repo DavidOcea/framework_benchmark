@@ -22,3 +22,18 @@
 |框架|标准测试|  
 |:-----:|:-------:|
 |Pytorch|[🔗](notes/tensorboad-pytorch.md)|
+
+--------
+## Reference-1（安装教程）   
+[1] [系统安装](https://github.com/fusimeng/ParallelComputing/blob/master/notes/serverinstall.md)   
+[2] [GPU驱动安装](https://github.com/fusimeng/ParallelComputing/blob/master/notes/driverinstall.md)   
+[3] [CUDA&cuDNN安装](https://github.com/fusimeng/ParallelComputing/blob/master/notes/cudainstall.md)   
+[4] [Docker安装](https://github.com/fusimeng/ParallelComputing/blob/master/notes/docker.md)   
+[5] [Nvidia Docker安装](https://github.com/fusimeng/ParallelComputing/blob/master/notes/nvdocker.md)   
+[6] [NCCL2安装]()   
+[7] [OpenMPI安装]()  
+[8] [Horovod安装]()   
+[9] [ONNX安装]()   
+[10] [TensorRT安装]()    
+[11] [Opencv安装]()   
+
