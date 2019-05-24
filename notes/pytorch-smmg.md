@@ -1,5 +1,23 @@
-# pytorch单机多卡标准测试 
-### 硬件环境  
+# Pytorch单机多卡标准测试   
+## TREE
+* 一、主机环境   
+* 二、主机环境测试
+* 三、Docker环境测试  
+## 一、主机环境  
+* CPU  
+```
+cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c 
+20  Genuine Intel(R) CPU @ 2.40GHz
+```
+* Memory   
+```
+free -h
+              total        used        free      shared  buff/cache   available
+Mem:            31G        652M         19G         77M         11G         30G
+Swap:          975M        192M        783M
+或者cat /proc/meminfo
+```
+* GPU   
 ```
 nvidia-smi
 Wed May  8 21:38:46 2019       
@@ -41,8 +59,77 @@ Wed May  8 21:38:46 2019
 |  No running processes found                                                 |
 +-----------------------------------------------------------------------------+
 ```
-## 一、主机环境
-### 1.环境准备
+* OS   
+``` 
+head -n 1 /etc/issue
+Ubuntu 16.04.5 LTS \n \l
+```
+* Kernal   
+``` 
+uname -a
+Linux ubuntu 4.4.0-131-generic #157-Ubuntu SMP Thu Jul 12 15:51:36 UTC 2018 x86_64 x86_64 x86_64 GNU/Linux
+```
+* [CUDA 10.0.x](https://github.com/fusimeng/ParallelComputing/blob/master/notes/cudainstall.md)   
+```   
+cat /usr/local/cuda/version.txt
+CUDA Version 10.0.130
+
+nvcc -V
+nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2018 NVIDIA Corporation
+Built on Sat_Aug_25_21:08:01_CDT_2018
+Cuda compilation tools, release 10.0, V10.0.130
+```
+* [cuDNN 7.5.x](https://github.com/fusimeng/ParallelComputing/blob/master/notes/cudainstall.md)   
+``` 
+cat /usr/local/cuda/include/cudnn.h | grep CUDNN_MAJOR -A 2
+#define CUDNN_MAJOR 7
+#define CUDNN_MINOR 5
+#define CUDNN_PATCHLEVEL 0
+--
+#define CUDNN_VERSION (CUDNN_MAJOR * 1000 + CUDNN_MINOR * 100 + CUDNN_PATCHLEVEL)
+#include "driver_types.h"
+```
+* [Docker](https://github.com/fusimeng/ParallelComputing/blob/master/notes/docker.md)
+* [Nvidia-Docker](https://github.com/fusimeng/ParallelComputing/blob/master/notes/nvdocker.md)   
+## 二、主机环境测试
+### 1.主机环境准备
+#### （1）.安装Anaconda
+参考链接：[🔗](https://github.com/fusimeng/ai_tools)    
+#### （2）. 使用Anaconda，创建所需的环境   
+```shell
+conda create --name pytorch python=3.6
+source activate pytorch
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple torch torchvision tensorboardx
+```
+```
+pip list 
+Package      Version 
+------------ --------
+certifi      2019.3.9
+cffi         1.12.3  
+mkl-fft      1.0.12  
+mkl-random   1.0.2   
+numpy        1.16.3  
+olefile      0.46    
+Pillow       6.0.0   
+pip          19.1    
+protobuf     3.7.1   
+pycparser    2.19    
+setuptools   41.0.1  
+six          1.12.0  
+tensorboardX 1.6     
+torch        1.0.1   
+torchvision  0.2.1   
+wheel        0.33.1
+```
+### 2.数据准备
+下载[cifar-10-python.tar.gz](https://www.cs.toronto.edu/~kriz/cifar-10-python.tar.gz)数据集，放在data目录下。   
+**cifar10介绍**    
+The CIFAR-10 dataset consists of 60000 32x32 colour images in 10 classes, with 6000 images per class. There are 50000 training images and 10000 test images.
+
+The dataset is divided into five training batches and one test batch, each with 10000 images. The test batch contains exactly 1000 randomly-selected images from each class. The training batches contain the remaining images in random order, but some training batches may contain more images from one class than another. Between them, the training batches contain exactly 5000 images from each class.
+
 (1) [安装Anaconda](https://github.com/fusimeng/ai_tools)    
 (2) 使用Anaconda，创建所需的环境   
 * python3.6
@@ -73,12 +160,6 @@ torch       1.0.1
 torchvision 0.2.1   
 wheel       0.33.1 
 ```
-### 2.数据准备
-下载[cifar-10-python.tar.gz](https://www.cs.toronto.edu/~kriz/cifar-10-python.tar.gz)数据集，放在data目录下。   
-**cifar10介绍**    
-The CIFAR-10 dataset consists of 60000 32x32 colour images in 10 classes, with 6000 images per class. There are 50000 training images and 10000 test images.
-
-The dataset is divided into five training batches and one test batch, each with 10000 images. The test batch contains exactly 1000 randomly-selected images from each class. The training batches contain the remaining images in random order, but some training batches may contain more images from one class than another. Between them, the training batches contain exactly 5000 images from each class.
 ### 3.代码准备     
 ``` 
 -pytorch  # pytorch标准测试代码目录 
@@ -95,12 +176,14 @@ The dataset is divided into five training batches and one test batch, each with 
 --until.py # 显式库
 ```
  
-### 4.测试及结果分析
-**用法-1**：   
+### 4.测试
+#### (1) 用法-1   
 ```shell
 python smmg.py   
-smmg.py 使用torch.nn.DataParallel方法进行数据分布式。   
-参数说明： 
+smmg.py 使用torch.nn.DataParallel方法进行数据分布式。 
+```  
+**参数说明：**   
+```
 --lr,               default=0.001, type=float, help='learning rate'
 --epoch,            default=10, type=int, help='number of epochs tp train for'
 --trainBatchSize,   default=1000, type=int, help='training batch size'
@@ -113,11 +196,13 @@ smmg.py 使用torch.nn.DataParallel方法进行数据分布式。
 --gpunum,           default='2', type=int, help='number of gpu , such as 2 '
 --parallel,         default='dataparallel', help='way of Parallel,dataparallel or distributed'
 ```
-**用法-2**：  
+#### (2)用法-2
 smmg_dist.py 使用torch.nn.parallel.DistributedDataParallel方法进行数据分布式。    
 ```
 python smmg_dist.py --gpu_device 0 1 2 3 --batch_size 768  
-参数说明：
+```
+**参数说明：**  
+```
 --lr              default=0.1, help=''
 --resume          default=None, help=''
 --batch_size      type=int, default=768, help=''
@@ -131,7 +216,7 @@ python smmg_dist.py --gpu_device 0 1 2 3 --batch_size 768
 --world_size      default=1, type=int, help=''
 --distributed     action='store_true', help=''
 ```
-**pytorch指定显卡的几种方式**   
+### 5. pytorch指定显卡的几种方式   
 1.直接终端中设定：   
 ```
 CUDA_VISIBLE_DEVICES=1 python my_script.py
@@ -146,24 +231,17 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "2"
 import torch
 torch.cuda.set_device(id)
 ```
-## 二、Docker环境
-### 1.环境准备
-镜像：https://cloud.docker.com/repository/docker/fusimeng/ai.pytorch    
-使用镜像：fusimeng/ai.pytorch:v5   
+## 三、Docker环境测试
+### 1.Docker环境准备
+镜像：fusimeng/ai-pytorch:16.04-10.0-3.5-1.1.0   
 ### 2.数据准备
 同上
 ### 3.代码准备
 同上
-### 4.测试及结果分析
-```shell
-nvidia-docker run -itd -v /root/felix/:/workspace fusimeng/ai.pytorch:v5
-nvidia-docker exec -it xxx bash
-```
-**用法**：   
-同上
-   
-**-----------------------------------------------------------------------**   
-# 参考   
-https://github.com/dnddnjs/pytorch-multigpu   
-https://github.com/kentaroy47/pytorch-mgpu-cifar10   
-https://github.com/icpm/pytorch-cifar10   
+### 4.测试
+  
+-----------------------------------------------------------------------   
+## Reference   
+[1] https://github.com/dnddnjs/pytorch-multigpu   
+[2] https://github.com/kentaroy47/pytorch-mgpu-cifar10   
+[3] https://github.com/icpm/pytorch-cifar10   

@@ -1,9 +1,26 @@
-# pytorch单机单卡标准测试
-  
-### 硬件环境   
+# Pytorch单机单卡标准测试
+## TREE
+* 一、主机环境   
+* 二、主机环境测试
+* 三、Docker环境测试  
+## 一、主机环境  
+* CPU  
+```
+cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c 
+20  Genuine Intel(R) CPU @ 2.40GHz
+```
+* Memory   
+```
+free -h
+              total        used        free      shared  buff/cache   available
+Mem:            31G        652M         19G         77M         11G         30G
+Swap:          975M        192M        783M
+或者cat /proc/meminfo
+```
+* GPU   
 ```
 nvidia-smi
-Wed May  8 16:53:55 2019       
+Fri May 24 13:31:05 2019       
 +-----------------------------------------------------------------------------+
 | NVIDIA-SMI 410.79       Driver Version: 410.79       CUDA Version: 10.0     |
 |-------------------------------+----------------------+----------------------+
@@ -11,7 +28,7 @@ Wed May  8 16:53:55 2019
 | Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
 |===============================+======================+======================|
 |   0  Tesla P40           Off  | 00000000:03:00.0 Off |                  Off |
-| N/A   39C    P0    45W / 250W |      0MiB / 24451MiB |      3%      Default |
+| N/A   41C    P0    45W / 250W |      0MiB / 24451MiB |      3%      Default |
 +-------------------------------+----------------------+----------------------+
                                                                                
 +-----------------------------------------------------------------------------+
@@ -21,18 +38,50 @@ Wed May  8 16:53:55 2019
 |  No running processes found                                                 |
 +-----------------------------------------------------------------------------+
 ```
-## 一、主机环境
-### 1.环境准备
-(1) [安装Anaconda](https://github.com/fusimeng/ai_tools)    
-(2) 使用Anaconda，创建所需的环境   
-* python3.6
-* numpy
-* pytorch 1.0.0
-* torchvision 0.2.1
+* OS   
+``` 
+head -n 1 /etc/issue
+Ubuntu 16.04.5 LTS \n \l
+```
+* Kernal   
+``` 
+uname -a
+Linux ubuntu 4.4.0-131-generic #157-Ubuntu SMP Thu Jul 12 15:51:36 UTC 2018 x86_64 x86_64 x86_64 GNU/Linux
+```
+* [CUDA 10.0.x](https://github.com/fusimeng/ParallelComputing/blob/master/notes/cudainstall.md)   
+```   
+cat /usr/local/cuda/version.txt
+CUDA Version 10.0.130
+
+nvcc -V
+nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2018 NVIDIA Corporation
+Built on Sat_Aug_25_21:08:01_CDT_2018
+Cuda compilation tools, release 10.0, V10.0.130
+```
+* [cuDNN 7.5.x](https://github.com/fusimeng/ParallelComputing/blob/master/notes/cudainstall.md)   
+``` 
+cat /usr/local/cuda/include/cudnn.h | grep CUDNN_MAJOR -A 2
+#define CUDNN_MAJOR 7
+#define CUDNN_MINOR 5
+#define CUDNN_PATCHLEVEL 0
+--
+#define CUDNN_VERSION (CUDNN_MAJOR * 1000 + CUDNN_MINOR * 100 + CUDNN_PATCHLEVEL)
+#include "driver_types.h"
+```
+* [Docker](https://github.com/fusimeng/ParallelComputing/blob/master/notes/docker.md)
+* [Nvidia-Docker](https://github.com/fusimeng/ParallelComputing/blob/master/notes/nvdocker.md)   
+## 二、主机环境测试
+### 1.主机环境准备
+#### （1）.安装Anaconda
+参考链接：[🔗](https://github.com/fusimeng/ai_tools)    
+#### （2）. 使用Anaconda，创建所需的环境   
 ```shell
 conda create --name pytorch python=3.6
 source activate pytorch
-pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pytorch torchvision tensorboardx
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple torch torchvision tensorboardx
+```
+```
 pip list 
 Package      Version 
 ------------ --------
@@ -73,13 +122,13 @@ The dataset is divided into five training batches and one test batch, each with 
 --smsg.py # 测试主程序
 --misc.py # 显式库
 ```
-### 4.测试及结果分析
+### 4.测试
 **用法**：   
 ```shell
 python smsg.py --lr 0.001 --epoch 1 --trainBatchSize 10000 --testBatchSize 10000 --num_workers 2 --log "../output/" 
-
-optional arguments:   
-
+```
+**optional arguments:**     
+```
 --lr                default=1e-3    learning rate
 --epoch             default=10     number of epochs tp train for
 --trainBatchSize    default=100     training batch size
@@ -90,7 +139,7 @@ optional arguments:
 --resume            default="../output/"    resume model 
 备注： 模型加载，再次训练这个功能没有做
 ```
-**pytorch指定显卡的几种方式**   
+### 5. pytorch指定显卡的几种方式   
 1.直接终端中设定：   
 ```
 CUDA_VISIBLE_DEVICES=1 python my_script.py
@@ -105,18 +154,12 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "2"
 import torch
 torch.cuda.set_device(id)
 ```
-## 二、Docker环境
-### 1.环境准备
-镜像：https://cloud.docker.com/repository/docker/fusimeng/ai.pytorch    
-使用镜像：fusimeng/ai.pytorch:v5   
+## 三、Docker环境测试
+### 1.Docker环境准备
+镜像：fusimeng/ai-pytorch:16.04-10.0-3.5-1.1.0   
 ### 2.数据准备
 同上
 ### 3.代码准备
 同上
-### 4.测试及结果分析
-```shell
-nvidia-docker run -itd -v /root/felix/:/workspace fusimeng/ai.pytorch:v5
-nvidia-docker exec -it xxx bash
-```
-**代码用法**：   
+### 4.测试
 同上
