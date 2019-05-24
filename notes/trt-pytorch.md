@@ -122,6 +122,7 @@ python test.py
 ```
 
 ### 4.标准代码测试-2
+通过pytorch搭建卷积神经网络完成手写识别任务，并将训练好的模型以多种方式部署到TensorRT中加速。
 #### （1）代码准备       
 ``` 
 -tensorrt 
@@ -171,44 +172,5 @@ torch.cuda.set_device(id)
 ### 4.测试
 同上
 
-通过pytorch搭建卷积神经网络完成手写识别任务，并将训练好的模型以多种方式部署到TensorRT中加速。
-
-#
-
-
-
-
-### 2.数据准备
-
-**pytorch指定显卡的几种方式**   
-1.直接终端中设定：   
-```
-CUDA_VISIBLE_DEVICES=1 python my_script.py
-```
-2.python代码中设定：   
-```
-import os
-os.environ["CUDA_VISIBLE_DEVICES"] = "2"
-```
-3.使用函数 set_device
-```
-import torch
-torch.cuda.set_device(id)
-```
-## 二、Docker环境
-### 1.环境准备
-镜像：https://cloud.docker.com/repository/docker/fusimeng/ai.pytorch    
-使用镜像：fusimeng/ai.pytorch:v5   
-### 2.数据准备
-同上
-### 3.代码准备
-同上
-### 4.测试及结果分析
-```shell
-nvidia-docker run -itd -v /root/felix/:/workspace fusimeng/ai.pytorch:v5
-nvidia-docker exec -it xxx bash
-```
-**代码用法**：   
-同上
 ## Reference
 [1] https://github.com/GuanLianzheng/pytorch_to_TensorRT5
